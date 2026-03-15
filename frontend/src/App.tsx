@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuthStore } from './stores/photoStore';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
@@ -11,6 +11,8 @@ function App() {
   const [showRegister, setShowRegister] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<number | null>(null);
   const [showUpload, setShowUpload] = useState(false);
+  const [gridRefreshKey, setGridRefreshKey] = useState(0);
+  const photoGridRef = useRef<{ refresh: () => void } | null>(null);
 
   if (!token) {
     return showRegister ? (
@@ -50,6 +52,7 @@ function App() {
           />
         ) : (
           <PhotoGrid
+            key={gridRefreshKey}
             onPhotoClick={setSelectedPhotoId}
             onUpload={() => setShowUpload(true)}
           />
@@ -60,7 +63,10 @@ function App() {
       {showUpload && (
         <UploadModal
           onClose={() => setShowUpload(false)}
-          onSuccess={() => setSelectedPhotoId(null)}
+          onSuccess={() => {
+            setShowUpload(false);
+            setGridRefreshKey(prev => prev + 1);
+          }}
         />
       )}
     </div>
