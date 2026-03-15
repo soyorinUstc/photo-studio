@@ -1,0 +1,45 @@
+{
+  "name": "photo-studio",
+  "version": "1.0.0",
+  "description": "Photo Studio - RAW 照片管理工具",
+  "main": "main.js",
+  "author": "Photo Studio Team",
+  "scripts": {
+    "dev": "electron .",
+    "build:win": "electron-builder --win",
+    "build": "electron-builder"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.0"
+  },
+  "build": {
+    "appId": "com.photostudio.app",
+    "productName": "Photo Studio",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "icon.ico",
+      "../frontend/dist/**/*",
+      "../backend/**/*"
+    ],
+    "extraResources": [
+      "../backend",
+      "../frontend/dist"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Photo Studio"
+    }
+  }
+}
